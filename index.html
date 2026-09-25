@@ -1,430 +1,415 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ranking Top 10 Ventas - Proyección Chrome / Moodle</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js CDN -->
+<!-- DASHBOARD RANKING ASESORES POR MARCA - MOODLE READY -->
+<div id="moodle-ranking-dashboard" style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); max-width: 1200px; margin: 0 auto;">
+  
+  <!-- Carga CDN Chart.js para gráficos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- FontAwesome CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 60%, #020617 100%);
-      color: #F8FAFC;
-    }
-    .gold-glow {
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
-      border-color: rgba(245, 158, 11, 0.8);
-    }
-    .silver-glow {
-      box-shadow: 0 0 25px rgba(148, 163, 184, 0.25);
-      border-color: rgba(203, 213, 225, 0.7);
-    }
-    .bronze-glow {
-      box-shadow: 0 0 25px rgba(217, 119, 6, 0.25);
-      border-color: rgba(217, 119, 6, 0.7);
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
-      border-radius: 8px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(51, 65, 85, 0.8);
-      border-radius: 8px;
-    }
-  </style>
-</head>
-<body class="p-4 md:p-8 min-h-screen">
 
-<div class="max-w-7xl mx-auto space-y-8">
-
-  <!-- Header Banner -->
-  <div class="flex flex-col md:flex-row justify-between items-center bg-slate-900/90 backdrop-blur border border-slate-800 p-6 rounded-2xl shadow-2xl gap-4">
-    <div class="text-center md:text-left flex items-center gap-4">
-      <div class="p-4 bg-amber-500/10 text-amber-500 rounded-2xl border border-amber-500/20">
-        <i class="fa-solid fa-trophy text-3xl"></i>
-      </div>
-      <div>
-        <h1 class="text-2xl md:text-3xl font-black tracking-tight text-white flex items-center gap-3">
-          TOP 10 RANKING DE VENTAS <span class="text-xs font-semibold px-2.5 py-1 bg-amber-500/20 text-amber-400 rounded-full border border-amber-500/30">ACTUALIZADO</span>
-        </h1>
-        <p class="text-slate-400 text-sm mt-0.5">Clasificación oficial de los 10 mejores asesores por volumen e importe</p>
-      </div>
+  <!-- Encabezado -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #e2e8f0;">
+    <div>
+      <h2 style="margin: 0; font-size: 24px; font-weight: 700; color: #0f172a;">📊 Ranking Comercial de Asesores por Trademarks</h2>
+      <p style="margin: 4px 0 0 0; font-size: 14px; color: #64748b;">Rendimiento comercial con desglose multimarca</p>
     </div>
+    <div style="font-size: 12px; background-color: #e0f2fe; color: #0369a1; padding: 6px 12px; border-radius: 20px; font-weight: 600;">
+      Actualizado: 25/09/2026 (16:45)
+    </div>
+  </div>
+
+  <!-- Métricas Generales (KPIs) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+    <div style="background: #ffffff; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #3b82f6;">
+      <span style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">Facturación Total</span>
+      <div id="kpi-facturacion" style="font-size: 22px; font-weight: 700; color: #1e293b; margin-top: 4px;">1.663.064,55 €</div>
+    </div>
+    <div style="background: #ffffff; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #10b981;">
+      <span style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">Total Matrículas</span>
+      <div id="kpi-ventas" style="font-size: 22px; font-weight: 700; color: #1e293b; margin-top: 4px;">604</div>
+    </div>
+    <div style="background: #ffffff; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b;">
+      <span style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">Asesores Visibles</span>
+      <div id="kpi-asesores" style="font-size: 22px; font-weight: 700; color: #1e293b; margin-top: 4px;">82</div>
+    </div>
+    <div style="background: #ffffff; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6;">
+      <span style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">Ticket Medio / Venta</span>
+      <div id="kpi-ticket" style="font-size: 22px; font-weight: 700; color: #1e293b; margin-top: 4px;">2.753,42 €</div>
+    </div>
+  </div>
+
+  <!-- Barra de Filtros, Búsqueda y Marca -->
+  <div style="background: #ffffff; padding: 16px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
     
-    <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800 shadow-inner">
-      <button id="btnSortVentas" onclick="updateDashboardMetric('ventas')" class="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-amber-500 text-slate-950 transition-all shadow-md">
-        <i class="fa-solid fa-bag-shopping"></i> Ordenar por Ventas
-      </button>
-      <button id="btnSortImporte" onclick="updateDashboardMetric('importe')" class="flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all">
-        <i class="fa-solid fa-euro-sign"></i> Ordenar por Facturación (€)
-      </button>
+    <!-- Botones Top Filter -->
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-size: 13px; font-weight: 600; color: #475569;">Ver:</span>
+      <button class="filter-btn" onclick="setTopFilter(3)" id="btn-top3" style="padding: 6px 12px; border: 1px solid #cbd5e1; background: #f8fafc; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: #334155;">Top 3</button>
+      <button class="filter-btn" onclick="setTopFilter(5)" id="btn-top5" style="padding: 6px 12px; border: 1px solid #cbd5e1; background: #f8fafc; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: #334155;">Top 5</button>
+      <button class="filter-btn" onclick="setTopFilter(10)" id="btn-top10" style="padding: 6px 12px; border: 1px solid #cbd5e1; background: #f8fafc; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: #334155;">Top 10</button>
+      <button class="filter-btn active" onclick="setTopFilter(0)" id="btn-top0" style="padding: 6px 12px; border: 1px solid #2563eb; background: #2563eb; color: #ffffff; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">Todos</button>
+    </div>
+
+    <!-- Filtro por Marca -->
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-size: 13px; font-weight: 600; color: #475569;">Marca:</span>
+      <select id="brandFilter" onchange="renderDashboard()" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background-color: #fff; cursor: pointer;">
+        <option value="TODAS">Todas las Marcas</option>
+        <option value="CEAC FP Oficial">CEAC FP Oficial</option>
+        <option value="Campus">Campus</option>
+        <option value="CEMP">CEMP</option>
+        <option value="Unisport">Unisport</option>
+        <option value="35mm">35mm</option>
+        <option value="Nubika">Nubika</option>
+        <option value="Tokio">Tokio</option>
+        <option value="Flou">Flou</option>
+        <option value="Mint">Mint</option>
+      </select>
+    </div>
+
+    <!-- Buscador -->
+    <div style="position: relative; flex-grow: 1; max-width: 260px;">
+      <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 Buscar asesor..." style="width: 100%; padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; outline: none; box-sizing: border-box;">
+    </div>
+
+    <!-- Ordenación -->
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-size: 13px; font-weight: 600; color: #475569;">Ordenar:</span>
+      <select id="sortMetric" onchange="renderDashboard()" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background-color: #fff; cursor: pointer;">
+        <option value="Registros">Matrículas</option>
+        <option value="Importe">Facturación (€)</option>
+      </select>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="podiumContainer">
-    <!-- Populated dynamically -->
+  <!-- Podio Top 3 Visual -->
+  <div id="podium-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px;"></div>
+
+  <!-- Sección de Gráficos -->
+  <div style="background: #ffffff; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 24px;">
+    <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #1e293b;">📈 Comparativa de Rendimiento</h3>
+    <div style="position: relative; height: 300px; width: 100%;">
+      <canvas id="rankingChart"></canvas>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-    
-    <!-- Chart Section (7 Cols) -->
-    <div class="lg:col-span-7 bg-slate-900/90 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-chart-column text-amber-400"></i> Gráfica del Top 10
-          </h2>
-          <p class="text-xs text-slate-400">Rendimiento comparativo entre los 10 primeros vendedores</p>
-        </div>
-        <span id="chartIndicator" class="text-xs font-semibold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-lg border border-amber-500/20">
-          Métrica: Ventas
-        </span>
-      </div>
-      
-      <div class="relative w-full h-[480px]">
-        <canvas id="rankingChart"></canvas>
-      </div>
-    </div>
-
-    <!-- Full Table List (5 Cols) -->
-    <div class="lg:col-span-5 bg-slate-900/90 backdrop-blur border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
-      <div>
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-list-ol text-amber-400"></i> Tabla del Top 10
-          </h2>
-          <span class="text-xs text-slate-400 font-semibold bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">10 asesores</span>
-        </div>
-        <div class="overflow-y-auto max-h-[420px] custom-scrollbar pr-1">
-          <table class="w-full text-left text-sm text-slate-300">
-            <thead class="text-xs uppercase bg-slate-800/90 text-slate-400 sticky top-0 z-10 backdrop-blur">
-              <tr>
-                <th class="p-3 rounded-l-lg">Pos.</th>
-                <th class="p-3">Asesor</th>
-                <th class="p-3 text-center">Ventas</th>
-                <th class="p-3 text-right rounded-r-lg">Importe</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody" class="divide-y divide-slate-800/60">
-              <!-- Populated dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-      <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
-        <span>Total Top 10 Op.: <strong class="text-white" id="totalVentasDisplay">163 operaciones</strong></span>
-        <span>Facturación acumulada: <strong class="text-emerald-400" id="totalImporteDisplay">491.483,83 €</strong></span>
-      </div>
-    </div>
-
+  <!-- Tabla de Posiciones -->
+  <div style="background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; overflow: hidden; overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+      <thead>
+        <tr style="background-color: #f1f5f9; border-bottom: 2px solid #e2e8f0; color: #475569;">
+          <th style="padding: 12px 16px; width: 50px; text-align: center;">#</th>
+          <th style="padding: 12px 16px;">Asesor</th>
+          <th style="padding: 12px 16px;">Distribución por Marca</th>
+          <th style="padding: 12px 16px; text-align: right;">Matrículas</th>
+          <th style="padding: 12px 16px; text-align: right;">Facturación Total</th>
+          <th style="padding: 12px 16px; text-align: right;">Ticket Medio</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Relleno dinámico -->
+      </tbody>
+    </table>
   </div>
-
-  <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-4">
-      <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl border border-blue-500/20">
-        <i class="fa-solid fa-code text-2xl"></i>
-      </div>
-      <div>
-        <h3 class="text-base font-bold text-white">¿Necesitas incrustar esta versión reducida en Moodle?</h3>
-        <p class="text-xs text-slate-400">Obtén un bloque de código HTML + Chart.js ligero y adaptable para el editor de Moodle.</p>
-      </div>
-    </div>
-    <button onclick="copyMoodleCode()" class="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2 shadow-lg shrink-0">
-      <i class="fa-solid fa-copy"></i> Copiar Código Moodle
-    </button>
-  </div>
-
 </div>
 
 <script>
-  // Top 10 Exact Dataset from provided image
-  const rawDataset = [
-    { name: 'Manu - FPO', ventas: 23, importe: 74543.56 },
-    { name: 'Jayone - FPO', ventas: 20, importe: 73108.79 },
-    { name: 'Isabel - FPO', ventas: 20, importe: 71437.22 },
-    { name: 'Óscar - Nubika', ventas: 17, importe: 52249.39 },
-    { name: 'Gloria - FPO', ventas: 14, importe: 52249.39 },
-    { name: 'Rocio - Flou', ventas: 16, importe: 32640.00 },
-    { name: 'Beatriz - Nubika', ventas: 15, importe: 34350.00 },
-    { name: 'Álvaro - 35MM', ventas: 14, importe: 63360.07 },
-    { name: 'Maricruz - Nubika', ventas: 14, importe: 30604.00 },
-    { name: 'Lilian - FPO', ventas: 14, importe: 63360.07 }
-    
+// Dataset extraído del Excel con desglose por Trademark
+const rawDataWithBrands = [
+  {"Asesor": "Manuel Jesus Aguilar Luque", "Importe": 79023.4, "Registros": 24, "Marcas": [{"Marca": "Campus", "Importe": 17820.0, "Registros": 8}, {"Marca": "CEAC FP Oficial", "Importe": 61203.4, "Registros": 16}]},
+  {"Asesor": "Jayone Garijo Ruiz", "Importe": 81634.73, "Registros": 22, "Marcas": [{"Marca": "Campus", "Importe": 6670.0, "Registros": 3}, {"Marca": "CEAC FP Oficial", "Importe": 74964.73, "Registros": 19}]},
+  {"Asesor": "Isabel Abalo de Dios", "Importe": 76478.14, "Registros": 22, "Marcas": [{"Marca": "Campus", "Importe": 2190.0, "Registros": 1}, {"Marca": "CEAC FP Oficial", "Importe": 74288.14, "Registros": 21}]},
+  {"Asesor": "Gloria Maria Compaire Izuel", "Importe": 59575.81, "Registros": 19, "Marcas": [{"Marca": "35mm", "Importe": 2190.0, "Registros": 1}, {"Marca": "Campus", "Importe": 8760.0, "Registros": 4}, {"Marca": "CEAC FP Oficial", "Importe": 48625.81, "Registros": 14}]},
+  {"Asesor": "Rocio Gerpe Barreiros", "Importe": 36920.0, "Registros": 18, "Marcas": [{"Marca": "Flou", "Importe": 36920.0, "Registros": 18}]},
+  {"Asesor": "Oscar Vilar Lombardero", "Importe": 37624.0, "Registros": 17, "Marcas": [{"Marca": "Nubika", "Importe": 37624.0, "Registros": 17}]},
+  {"Asesor": "Beatriz Queiruga Penedo", "Importe": 36540.0, "Registros": 16, "Marcas": [{"Marca": "Nubika", "Importe": 36540.0, "Registros": 16}]},
+  {"Asesor": "Alvaro Tineo Meza", "Importe": 36045.0, "Registros": 15, "Marcas": [{"Marca": "35mm", "Importe": 36045.0, "Registros": 15}]},
+  {"Asesor": "Maria Cruz Baltodano Chavarria", "Importe": 30604.0, "Registros": 14, "Marcas": [{"Marca": "Nubika", "Importe": 30604.0, "Registros": 14}]},
+  {"Asesor": "Lilian Llanos Llanos", "Importe": 63360.07, "Registros": 14, "Marcas": [{"Marca": "CEAC FP Oficial", "Importe": 63360.07, "Registros": 14}]},
+  {"Asesor": "Ana Blanco Gonzalez", "Importe": 30346.0, "Registros": 14, "Marcas": [{"Marca": "Campus", "Importe": 30346.0, "Registros": 14}]},
+  {"Asesor": "Leticia Maria Arguelles Blanco", "Importe": 44722.47, "Registros": 13, "Marcas": [{"Marca": "Campus", "Importe": 8960.0, "Registros": 4}, {"Marca": "CEAC FP Oficial", "Importe": 35762.47, "Registros": 9}]},
+  {"Asesor": "Ana Yolanda Otero Revenga", "Importe": 26918.0, "Registros": 13, "Marcas": [{"Marca": "Campus", "Importe": 26918.0, "Registros": 13}]},
+  {"Asesor": "Jose Vicente Martinez", "Importe": 25380.0, "Registros": 12, "Marcas": [{"Marca": "Flou", "Importe": 25380.0, "Registros": 12}]},
+  {"Asesor": "Gabriel Antonio Donis Tato", "Importe": 30730.0, "Registros": 12, "Marcas": [{"Marca": "Unisport", "Importe": 30730.0, "Registros": 12}]},
+  {"Asesor": "Fatima Fernandez Martinez", "Importe": 44680.0, "Registros": 12, "Marcas": [{"Marca": "CEMP", "Importe": 44680.0, "Registros": 12}]},
+  {"Asesor": "Beatriz Fernandez-España Barral", "Importe": 26380.0, "Registros": 12, "Marcas": [{"Marca": "Flou", "Importe": 26380.0, "Registros": 12}]},
+  {"Asesor": "Maria Begoña Diaz Melendez", "Importe": 39624.0, "Registros": 11, "Marcas": [{"Marca": "CEMP", "Importe": 39624.0, "Registros": 11}]},
+  {"Asesor": "Esperanza Ruiz San Martin", "Importe": 27860.0, "Registros": 11, "Marcas": [{"Marca": "35mm", "Importe": 27860.0, "Registros": 11}]},
+  {"Asesor": "Nuria Mariño Alonso", "Importe": 21500.0, "Registros": 10, "Marcas": [{"Marca": "Flou", "Importe": 21500.0, "Registros": 10}]},
+  {"Asesor": "Sofia Ines Garcia Saavedra", "Importe": 19182.0, "Registros": 9, "Marcas": [{"Marca": "Campus", "Importe": 19182.0, "Registros": 9}]},
+  {"Asesor": "Natalia Almudena Graña Suarez", "Importe": 30678.0, "Registros": 9, "Marcas": [{"Marca": "CEMP", "Importe": 30678.0, "Registros": 9}]},
+  {"Asesor": "Jose Pablo Otero Acevedo", "Importe": 23252.0, "Registros": 9, "Marcas": [{"Marca": "Tokio", "Importe": 23252.0, "Registros": 9}]},
+  {"Asesor": "Javier Deus Garcia", "Importe": 19210.0, "Registros": 9, "Marcas": [{"Marca": "Flou", "Importe": 19210.0, "Registros": 9}]},
+  {"Asesor": "Jacob Martinez Gonzalez", "Importe": 33610.0, "Registros": 9, "Marcas": [{"Marca": "CEMP", "Importe": 33610.0, "Registros": 9}]},
+  {"Asesor": "Carlos Matias Dos Santos Mora", "Importe": 25060.0, "Registros": 9, "Marcas": [{"Marca": "Unisport", "Importe": 25060.0, "Registros": 9}]},
+  {"Asesor": "Brais Prieto Mexigos", "Importe": 21060.0, "Registros": 9, "Marcas": [{"Marca": "Unisport", "Importe": 21060.0, "Registros": 9}]},
+  {"Asesor": "Santiago Concheiro Alvarez", "Importe": 21170.0, "Registros": 8, "Marcas": [{"Marca": "35mm", "Importe": 21170.0, "Registros": 8}]},
+  {"Asesor": "Maria Luz Vidal Cardalda", "Importe": 16044.0, "Registros": 8, "Marcas": [{"Marca": "Flou", "Importe": 16044.0, "Registros": 8}]},
+  {"Asesor": "Lourdes Quintela Fraga", "Importe": 30620.0, "Registros": 8, "Marcas": [{"Marca": "CEMP", "Importe": 30620.0, "Registros": 8}]},
+  {"Asesor": "Laura Varela Allo", "Importe": 18340.0, "Registros": 8, "Marcas": [{"Marca": "35mm", "Importe": 18340.0, "Registros": 8}]},
+  {"Asesor": "Carmen Vazquez Ferro", "Importe": 19020.0, "Registros": 8, "Marcas": [{"Marca": "CEMP", "Importe": 19020.0, "Registros": 8}]},
+  {"Asesor": "Ana Maria Fuentes Fuentes", "Importe": 17595.27, "Registros": 8, "Marcas": [{"Marca": "Campus", "Importe": 15030.0, "Registros": 7}, {"Marca": "CEAC FP Oficial", "Importe": 2565.27, "Registros": 1}]},
+  {"Asesor": "Victor Guerra Vazquez", "Importe": 20080.0, "Registros": 7, "Marcas": [{"Marca": "Unisport", "Importe": 20080.0, "Registros": 7}]},
+  {"Asesor": "Vanessa Andreina De Angelis", "Importe": 17832.0, "Registros": 7, "Marcas": [{"Marca": "Tokio", "Importe": 17832.0, "Registros": 7}]},
+  {"Asesor": "Miguel Angel Villarroel Valenzuela", "Importe": 18232.0, "Registros": 7, "Marcas": [{"Marca": "Tokio", "Importe": 18232.0, "Registros": 7}]},
+  {"Asesor": "Margarita Garcia Iglesias", "Importe": 14260.0, "Registros": 7, "Marcas": [{"Marca": "Campus", "Importe": 14260.0, "Registros": 7}]},
+  {"Asesor": "Gerardo Manuel Roca Felpeto", "Importe": 18009.0, "Registros": 7, "Marcas": [{"Marca": "Unisport", "Importe": 18009.0, "Registros": 7}]},
+  {"Asesor": "Rafael Mella Ferreiro", "Importe": 19040.0, "Registros": 6, "Marcas": [{"Marca": "Unisport", "Importe": 19040.0, "Registros": 6}]},
+  {"Asesor": "Monica Orjales Ormaechea", "Importe": 16838.0, "Registros": 6, "Marcas": [{"Marca": "CEMP", "Importe": 16838.0, "Registros": 6}]},
+  {"Asesor": "Maria Lourdes Manzano Fernandez", "Importe": 21636.53, "Registros": 6, "Marcas": [{"Marca": "Campus", "Importe": 1946.0, "Registros": 1}, {"Marca": "CEAC FP Oficial", "Importe": 19690.53, "Registros": 5}]},
+  {"Asesor": "Maria Lourdes Alonso Nuñez", "Importe": 13040.0, "Registros": 6, "Marcas": [{"Marca": "Campus", "Importe": 13040.0, "Registros": 6}]},
+  {"Asesor": "Maria Lopez Regueira", "Importe": 20270.0, "Registros": 6, "Marcas": [{"Marca": "CEMP", "Importe": 20270.0, "Registros": 6}]},
+  {"Asesor": "Marcos Casal Bellon", "Importe": 16440.0, "Registros": 6, "Marcas": [{"Marca": "Unisport", "Importe": 16440.0, "Registros": 6}]},
+  {"Asesor": "Lucia Perez Rodriguez", "Importe": 18236.87, "Registros": 6, "Marcas": [{"Marca": "Campus", "Importe": 2090.0, "Registros": 1}, {"Marca": "CEAC FP Oficial", "Importe": 16146.87, "Registros": 5}]},
+  {"Asesor": "Estefania Iglesias Delgado", "Importe": 14190.0, "Registros": 6, "Marcas": [{"Marca": "Nubika", "Importe": 14190.0, "Registros": 6}]},
+  {"Asesor": "Diego Felipe De Araujo", "Importe": 17375.0, "Registros": 6, "Marcas": [{"Marca": "Tokio", "Importe": 17375.0, "Registros": 6}]},
+  {"Asesor": "Alejandro Garcia Delgado", "Importe": 12740.0, "Registros": 6, "Marcas": [{"Marca": "Campus", "Importe": 12740.0, "Registros": 6}]},
+  {"Asesor": "Yanet Gabriela Garcia Vielma", "Importe": 11600.0, "Registros": 5, "Marcas": [{"Marca": "Unisport", "Importe": 11600.0, "Registros": 5}]},
+  {"Asesor": "Luis Enrique Perez Cordova", "Importe": 13420.0, "Registros": 5, "Marcas": [{"Marca": "Tokio", "Importe": 13420.0, "Registros": 5}]},
+  {"Asesor": "Lucia Ugarte Brandariz", "Importe": 13054.0, "Registros": 5, "Marcas": [{"Marca": "Tokio", "Importe": 13054.0, "Registros": 5}]},
+  {"Asesor": "Laura Costoya Santos", "Importe": 13200.0, "Registros": 5, "Marcas": [{"Marca": "Unisport", "Importe": 13200.0, "Registros": 5}]},
+  {"Asesor": "Ana Cristina Souza Diaz", "Importe": 16450.0, "Registros": 5, "Marcas": [{"Marca": "35mm", "Importe": 16450.0, "Registros": 5}]},
+  {"Asesor": "Yolanda Gonzalez Rodriguez", "Importe": 10810.0, "Registros": 4, "Marcas": [{"Marca": "Unisport", "Importe": 10810.0, "Registros": 4}]},
+  {"Asesor": "Valeria Ledo Gonzalo", "Importe": 8632.0, "Registros": 4, "Marcas": [{"Marca": "35mm", "Importe": 8632.0, "Registros": 4}]},
+  {"Asesor": "Sandra Alvarez Lourido", "Importe": 12327.5, "Registros": 4, "Marcas": [{"Marca": "Mint", "Importe": 12327.5, "Registros": 4}]},
+  {"Asesor": "Maria Jesus Prado Mosquera", "Importe": 15060.0, "Registros": 4, "Marcas": [{"Marca": "CEMP", "Importe": 15060.0, "Registros": 4}]},
+  {"Asesor": "Jose Manuel Doldan Miras", "Importe": 12060.0, "Registros": 4, "Marcas": [{"Marca": "Unisport", "Importe": 12060.0, "Registros": 4}]},
+  {"Asesor": "Ivan Dopico Rodriguez", "Importe": 10282.0, "Registros": 4, "Marcas": [{"Marca": "Tokio", "Importe": 10282.0, "Registros": 4}]},
+  {"Asesor": "Ileana Waisman Martinez", "Importe": 8760.0, "Registros": 4, "Marcas": [{"Marca": "Nubika", "Importe": 8760.0, "Registros": 4}]},
+  {"Asesor": "Helen Rachell Aviles Barcenas", "Importe": 7760.0, "Registros": 4, "Marcas": [{"Marca": "Flou", "Importe": 7760.0, "Registros": 4}]},
+  {"Asesor": "Sandra Marti Cano", "Importe": 12181.5, "Registros": 3, "Marcas": [{"Marca": "CEAC FP Oficial", "Importe": 12181.5, "Registros": 3}]},
+  {"Asesor": "David Dopico Rodriguez", "Importe": 6970.0, "Registros": 3, "Marcas": [{"Marca": "Unisport", "Importe": 6970.0, "Registros": 3}]},
+  {"Asesor": "Antonio Javier Eijo Cal", "Importe": 7172.0, "Registros": 3, "Marcas": [{"Marca": "Tokio", "Importe": 7172.0, "Registros": 3}]},
+  {"Asesor": "Andrea Fernandez España colon", "Importe": 7520.0, "Registros": 3, "Marcas": [{"Marca": "Unisport", "Importe": 7520.0, "Registros": 3}]},
+  {"Asesor": "Victor Andres Ordoñez Masache", "Importe": 3176.67, "Registros": 2, "Marcas": [{"Marca": "CEAC FP Oficial", "Importe": 3176.67, "Registros": 2}]},
+  {"Asesor": "Tatiana Andres Docal", "Importe": 4066.0, "Registros": 2, "Marcas": [{"Marca": "Campus", "Importe": 4066.0, "Registros": 2}]},
+  {"Asesor": "Robin Mario De Miranda Miranda", "Importe": 5680.0, "Registros": 2, "Marcas": [{"Marca": "Tokio", "Importe": 2690.0, "Registros": 1}, {"Marca": "Unisport", "Importe": 2990.0, "Registros": 1}]},
+  {"Asesor": "Noelia Ares Patiño", "Importe": 7780.0, "Registros": 2, "Marcas": [{"Marca": "CEMP", "Importe": 7780.0, "Registros": 2}]},
+  {"Asesor": "Maria Virginia Graterol Valera", "Importe": 5730.0, "Registros": 2, "Marcas": [{"Marca": "Unisport", "Importe": 5730.0, "Registros": 2}]},
+  {"Asesor": "Marcelo Garcia Cruz", "Importe": 5780.0, "Registros": 2, "Marcas": [{"Marca": "Tokio", "Importe": 5780.0, "Registros": 2}]},
+  {"Asesor": "Lorena Angeriz Lopez", "Importe": 4180.0, "Registros": 2, "Marcas": [{"Marca": "Campus", "Importe": 4180.0, "Registros": 2}]},
+  {"Asesor": "Jaime Paz Fernandez", "Importe": 5180.0, "Registros": 2, "Marcas": [{"Marca": "Tokio", "Importe": 5180.0, "Registros": 2}]},
+  {"Asesor": "Irene Blanco Rodriguez", "Importe": 4312.0, "Registros": 2, "Marcas": [{"Marca": "35mm", "Importe": 4312.0, "Registros": 2}]},
+  {"Asesor": "Gema Fernandez Nogueira", "Importe": 5130.0, "Registros": 2, "Marcas": [{"Marca": "Unisport", "Importe": 5130.0, "Registros": 2}]},
+  {"Asesor": "Carlos Miguez Gracia", "Importe": 4052.0, "Registros": 2, "Marcas": [{"Marca": "35mm", "Importe": 2190.0, "Registros": 1}, {"Marca": "Campus", "Importe": 1862.0, "Registros": 1}]},
+  {"Asesor": "Rocio Ponte Gonzalez", "Importe": 2090.0, "Registros": 1, "Marcas": [{"Marca": "Campus", "Importe": 2090.0, "Registros": 1}]},
+  {"Asesor": "Maria Alejandra Fernandez Gonzalez", "Importe": 1776.0, "Registros": 1, "Marcas": [{"Marca": "Flou", "Importe": 1776.0, "Registros": 1}]},
+  {"Asesor": "Lorena Lago Piñeiro", "Importe": 3890.0, "Registros": 1, "Marcas": [{"Marca": "CEMP", "Importe": 3890.0, "Registros": 1}]},
+  {"Asesor": "Lorena Daranae Zuloaga Sanchez", "Importe": 1790.0, "Registros": 1, "Marcas": [{"Marca": "Unisport", "Importe": 1790.0, "Registros": 1}]},
+  {"Asesor": "Itzel Rodriguez Hernandez", "Importe": 850.47, "Registros": 1, "Marcas": [{"Marca": "CEMP", "Importe": 850.47, "Registros": 1}]},
+  {"Asesor": "Begoña Chacon Olmos", "Importe": 1336.12, "Registros": 1, "Marcas": [{"Marca": "CEAC FP Oficial", "Importe": 1336.12, "Registros": 1}]}
+];
+
+let currentTopFilter = 0; // 0 = Todos
+let chartInstance = null;
+
+const formatCurrency = (amount) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amount);
+
+const brandColors = {
+  'Campus': '#3b82f6',
+  'CEAC FP Oficial': '#059669',
+  'Nubika': '#d97706',
+  '35mm': '#7c3aed',
+  'CEMP': '#dc2626',
+  'Flou': '#ec4899',
+  'Unisport': '#0284c7',
+  'Tokio': '#4f46e5',
+  'Mint': '#10b981'
+};
+
+function setTopFilter(count) {
+  currentTopFilter = count;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.style.background = '#f8fafc';
+    btn.style.color = '#334155';
+    btn.style.borderColor = '#cbd5e1';
+  });
+  const activeBtn = document.getElementById(`btn-top${count}`);
+  if(activeBtn) {
+    activeBtn.style.background = '#2563eb';
+    activeBtn.style.color = '#ffffff';
+    activeBtn.style.borderColor = '#2563eb';
+  }
+  renderDashboard();
+}
+
+function filterData() {
+  renderDashboard();
+}
+
+function getProcessedData() {
+  const metric = document.getElementById('sortMetric').value;
+  const selectedBrand = document.getElementById('brandFilter').value;
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+  let processed = [];
+
+  rawDataWithBrands.forEach(item => {
+    let filteredMarcas = item.Marcas;
+    if (selectedBrand !== 'TODAS') {
+      filteredMarcas = item.Marcas.filter(m => m.Marca === selectedBrand);
+    }
+
+    if (filteredMarcas.length > 0) {
+      const imp = filteredMarcas.reduce((acc, m) => acc + m.Importe, 0);
+      const reg = filteredMarcas.reduce((acc, m) => acc + m.Registros, 0);
+      
+      processed.push({
+        Asesor: item.Asesor,
+        Importe: imp,
+        Registros: reg,
+        Marcas: filteredMarcas
+      });
+    }
+  });
+
+  if (searchTerm) {
+    processed = processed.filter(item => item.Asesor.toLowerCase().includes(searchTerm));
+  }
+
+  processed.sort((a, b) => b[metric] - a[metric]);
+
+  if (currentTopFilter > 0) {
+    processed = processed.slice(0, currentTopFilter);
+  }
+
+  return { data: processed, metric, selectedBrand };
+}
+
+function updateKPIs(data) {
+  const totalFacturacion = data.reduce((acc, curr) => acc + curr.Importe, 0);
+  const totalVentas = data.reduce((acc, curr) => acc + curr.Registros, 0);
+  const totalAsesores = data.length;
+  const ticketMedio = totalVentas > 0 ? totalFacturacion / totalVentas : 0;
+
+  document.getElementById('kpi-facturacion').textContent = formatCurrency(totalFacturacion);
+  document.getElementById('kpi-ventas').textContent = totalVentas;
+  document.getElementById('kpi-asesores').textContent = totalAsesores;
+  document.getElementById('kpi-ticket').textContent = formatCurrency(ticketMedio);
+}
+
+function renderPodium(topData, metric) {
+  const container = document.getElementById('podium-container');
+  container.innerHTML = '';
+
+  if (topData.length === 0) return;
+
+  const podiumColors = [
+    { bg: '#fef9c3', border: '#eab308', badge: '🥇 1º Puesto', color: '#854d0e' },
+    { bg: '#f1f5f9', border: '#94a3b8', badge: '🥈 2º Puesto', color: '#334155' },
+    { bg: '#ffedd5', border: '#f97316', badge: '🥉 3º Puesto', color: '#9a3412' }
   ];
 
-  let currentData = [];
-  let chartInstance = null;
-  let activeMetric = 'ventas';
-
-  function formatEUR(val) {
-    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(val);
-  }
-
-  function getSortedData(metric) {
-    return [...rawDataset].sort((a, b) => {
-      if (b[metric] !== a[metric]) {
-        return b[metric] - a[metric];
-      }
-      const altMetric = metric === 'ventas' ? 'importe' : 'ventas';
-      return b[altMetric] - a[altMetric];
-    });
-  }
-
-  function renderPodium() {
-    const top3 = currentData.slice(0, 3);
-    const podiumContainer = document.getElementById('podiumContainer');
-    
-    // Order to display 2nd, 1st, 3rd visually
-    const displayOrder = [top3[1], top3[0], top3[2]];
-
-    podiumContainer.innerHTML = displayOrder.map((item) => {
-      const isFirst = item === top3[0];
-      const isSecond = item === top3[1];
-
-      let glowClass = 'gold-glow bg-gradient-to-b from-amber-950/30 to-slate-900';
-      let badgeClass = 'bg-amber-400 text-slate-950';
-      let trophyIcon = 'fa-trophy text-amber-400';
-      let posText = '1º PUESTO';
-
-      if (isSecond) {
-        glowClass = 'silver-glow bg-gradient-to-b from-slate-800/40 to-slate-900';
-        badgeClass = 'bg-slate-300 text-slate-950';
-        trophyIcon = 'fa-medal text-slate-300';
-        posText = '2º PUESTO';
-      } else if (item === top3[2]) {
-        glowClass = 'bronze-glow bg-gradient-to-b from-amber-900/20 to-slate-900';
-        badgeClass = 'bg-amber-700 text-white';
-        trophyIcon = 'fa-award text-amber-600';
-        posText = '3º PUESTO';
-      }
-
-      return `
-        <div class="border p-6 rounded-2xl relative overflow-hidden transition-all duration-300 transform hover:-translate-y-1 ${glowClass} ${isFirst ? 'md:-translate-y-2' : ''}">
-          <div class="flex justify-between items-start mb-4">
-            <span class="text-xs font-black px-3 py-1 rounded-full ${badgeClass} uppercase tracking-wider">
-              ${posText}
-            </span>
-            <i class="fa-solid ${trophyIcon} text-2xl"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-lg text-white line-clamp-1">${item.name}</h3>
-            <div class="mt-4 pt-4 border-t border-slate-800/80 flex justify-between items-end">
-              <div>
-                <p class="text-xs text-slate-400">Ventas</p>
-                <p class="text-xl font-extrabold text-amber-400">${item.ventas} <span class="text-xs font-normal">ventas</span></p>
-              </div>
-              <div class="text-right">
-                <p class="text-xs text-slate-400">Facturación</p>
-                <p class="text-base font-bold text-emerald-400">${formatEUR(item.importe)}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = currentData.map((item, index) => {
-      const rank = index + 1;
-      let badgeColor = 'text-slate-400 bg-slate-800/80';
-      if (rank === 1) badgeColor = 'text-amber-950 bg-amber-400 font-bold';
-      if (rank === 2) badgeColor = 'text-slate-950 bg-slate-300 font-bold';
-      if (rank === 3) badgeColor = 'text-white bg-amber-700 font-bold';
-
-      return `
-        <tr class="hover:bg-slate-800/50 transition">
-          <td class="p-3 font-semibold">
-            <span class="w-7 h-7 inline-flex items-center justify-center rounded-lg ${badgeColor} text-xs">
-              ${rank}º
-            </span>
-          </td>
-          <td class="p-3 font-medium text-white">${item.name}</td>
-          <td class="p-3 text-center font-bold ${activeMetric === 'ventas' ? 'text-amber-400 text-base' : 'text-slate-300'}">${item.ventas}</td>
-          <td class="p-3 text-right font-semibold ${activeMetric === 'importe' ? 'text-emerald-400 text-base font-bold' : 'text-slate-300'}">${formatEUR(item.importe)}</td>
-        </tr>
-      `;
-    }).join('');
-
-    const sumVentas = rawDataset.reduce((acc, curr) => acc + curr.ventas, 0);
-    const sumImporte = rawDataset.reduce((acc, curr) => acc + curr.importe, 0);
-    document.getElementById('totalVentasDisplay').textContent = `${sumVentas} operaciones`;
-    document.getElementById('totalImporteDisplay').textContent = formatEUR(sumImporte);
-  }
-
-  function renderChart() {
-    const ctx = document.getElementById('rankingChart').getContext('2d');
-    
-    const labels = currentData.map(d => d.name);
-    const dataValues = currentData.map(d => d[activeMetric]);
-
-    const bgColors = currentData.map((d, index) => {
-      if (index === 0) return '#F59E0B'; // Oro
-      if (index === 1) return '#CBD5E1'; // Plata
-      if (index === 2) return '#D97706'; // Bronce
-      return '#334155'; // Resto
-    });
-
-    const borderColors = currentData.map((d, index) => {
-      if (index === 0) return '#FBBF24';
-      if (index === 1) return '#F1F5F9';
-      if (index === 2) return '#F59E0B';
-      return '#475569';
-    });
-
-    if (chartInstance) {
-      chartInstance.destroy();
-    }
-
-    chartInstance = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: activeMetric === 'ventas' ? 'Ventas' : 'Importe (€)',
-          data: dataValues,
-          backgroundColor: bgColors,
-          borderColor: borderColors,
-          borderWidth: 1.5,
-          borderRadius: 6,
-          borderSkipped: false
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: {
-          duration: 800,
-          easing: 'easeOutQuart'
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#0F172A',
-            titleColor: '#F8FAFC',
-            bodyColor: '#38BDF8',
-            borderColor: '#334155',
-            borderWidth: 1,
-            padding: 12,
-            callbacks: {
-              label: function(context) {
-                const item = currentData[context.dataIndex];
-                return ` Ventas: ${item.ventas} op. | Facturación: ${formatEUR(item.importe)}`;
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: { color: 'rgba(51, 65, 85, 0.3)' },
-            ticks: { 
-              color: '#94A3B8',
-              callback: function(val) {
-                return activeMetric === 'importe' ? (val / 1000) + 'k €' : val;
-              }
-            },
-            beginAtZero: true
-          },
-          y: {
-            grid: { display: false },
-            ticks: { 
-              color: '#F8FAFC',
-              font: { weight: '500', size: 12 }
-            }
-          }
-        }
-      }
-    });
-  }
-
-  function updateDashboardMetric(metric) {
-    activeMetric = metric;
-    currentData = getSortedData(metric);
-
-    const btnVentas = document.getElementById('btnSortVentas');
-    const btnImporte = document.getElementById('btnSortImporte');
-    const chartIndicator = document.getElementById('chartIndicator');
-
-    if (metric === 'ventas') {
-      btnVentas.className = "flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-amber-500 text-slate-950 transition-all shadow-md";
-      btnImporte.className = "flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
-      chartIndicator.textContent = "Métrica: Número de Ventas";
-      chartIndicator.className = "text-xs font-semibold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-lg border border-amber-500/20";
-    } else {
-      btnImporte.className = "flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg bg-emerald-500 text-slate-950 transition-all shadow-md";
-      btnVentas.className = "flex items-center gap-2 px-4 py-2.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition-all";
-      chartIndicator.textContent = "Métrica: Facturación (€)";
-      chartIndicator.className = "text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20";
-    }
-
-    renderPodium();
-    renderTable();
-    renderChart();
-  }
-
-  function copyMoodleCode() {
-    const moodleSnippet = `<script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>
-<div style="background-color: #0F172A; padding: 25px; border-radius: 16px; max-width: 900px; margin: 0 auto; color: #FFFFFF; font-family: sans-serif;">
-  <h2 style="text-align: center; margin: 0 0 5px 0; font-size: 24px; font-weight: bold;">TOP 10 RANKING DE VENTAS</h2>
-  <p style="text-align: center; color: #94A3B8; margin: 0 0 20px 0; font-size: 14px;">Resultados Actualizados del Período</p>
-  <div style="position: relative; height: 420px; width: 100%;">
-    <canvas id="top10ChartMoodle"></canvas>
-  </div>
-</div>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const ctx = document.getElementById('top10ChartMoodle').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Manuel Jesus Aguilar Luque', 'Jayone Garijo Ruiz', 'Isabel Abalo de Dios', 'Gloria Maria Compaire Izuel', 'Rocio Gerpe Barreiros', 'Oscar Vilar Lombardero', 'Lilian Llanos Llanos', 'Alvaro Tineo Meza', 'Beatriz Queiruga Penedo', 'Maria Cruz Baltodano Chavarria'],
-        datasets: [{
-          label: 'Ventas',
-          data: [23, 19, 19, 17, 16, 16, 14, 14, 14, 14],
-          backgroundColor: ['#F59E0B', '#CBD5E1', '#D97706', '#334155', '#334155', '#334155', '#334155', '#334155', '#334155', '#334155'],
-          borderWidth: 1,
-          borderRadius: 6
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: '#94A3B8' }, grid: { display: false }, beginAtZero: true },
-          y: { ticks: { color: '#F8FAFC' }, grid: { display: false } }
-        }
-      }
-    });
+  const top3 = topData.slice(0, 3);
+  top3.forEach((item, index) => {
+    const style = podiumColors[index];
+    const card = document.createElement('div');
+    card.style.cssText = `background: ${style.bg}; border: 2px solid ${style.border}; border-radius: 10px; padding: 16px; text-align: center; font-weight: 600; color: ${style.color};`;
+    card.innerHTML = `
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 6px;">${style.badge}</div>
+      <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">${item.Asesor}</div>
+      <div style="font-size: 18px; font-weight: 800; color: #1e293b;">${metric === 'Importe' ? formatCurrency(item.Importe) : item.Registros + ' Matrículas'}</div>
+      <div style="font-size: 12px; color: #64748b; margin-top: 4px;">
+        ${metric === 'Importe' ? item.Registros + ' ventas' : formatCurrency(item.Importe)}
+      </div>
+    `;
+    container.appendChild(card);
   });
-<\/script>`;
+}
 
-    const el = document.createElement('textarea');
-    el.value = moodleSnippet;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-
-    alert('¡Código para Moodle copiado al portapapeles!');
+function renderChart(data, metric) {
+  const ctx = document.getElementById('rankingChart').getContext('2d');
+  
+  if (chartInstance) {
+    chartInstance.destroy();
   }
 
-  window.onload = function() {
-    updateDashboardMetric('ventas');
-  };
+  const topChartData = data.slice(0, 10);
+  const labels = topChartData.map(item => item.Asesor.split(' ')[0] + ' ' + (item.Asesor.split(' ')[1] || ''));
+  const values = topChartData.map(item => item[metric]);
+
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: metric === 'Importe' ? 'Facturación Total (€)' : 'Número de Matrículas',
+        data: values,
+        backgroundColor: '#3b82f6',
+        borderRadius: 6,
+        hoverBackgroundColor: '#2563eb'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let val = context.raw;
+              return metric === 'Importe' ? ' ' + formatCurrency(val) : ' ' + val + ' matrículas';
+            }
+          }
+        }
+      },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderTable(data, metric) {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;">No se encontraron asesores con los criterios seleccionados.</td></tr>`;
+    return;
+  }
+
+  data.forEach((item, index) => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid #f1f5f9';
+    if (index % 2 === 1) tr.style.backgroundColor = '#fafafa';
+
+    const ticketMedio = item.Registros > 0 ? item.Importe / item.Registros : 0;
+
+    let rankBadge = `<span style="font-weight: 700; color: #64748b;">${index + 1}</span>`;
+    if (index === 0) rankBadge = `<span style="background: #fef08a; color: #854d0e; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 12px;">1º</span>`;
+    if (index === 1) rankBadge = `<span style="background: #e2e8f0; color: #334155; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 12px;">2º</span>`;
+    if (index === 2) rankBadge = `<span style="background: #ffedd5; color: #9a3412; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 12px;">3º</span>`;
+
+    // Render marcas Badges
+    const marcasBadges = item.Marcas.map(m => {
+      const bgColor = brandColors[m.Marca] || '#64748b';
+      return `<span style="background-color: ${bgColor}15; color: ${bgColor}; border: 1px solid ${bgColor}40; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap;">
+        ${m.Marca} (${m.Registros})
+      </span>`;
+    }).join(' ');
+
+    tr.innerHTML = `
+      <td style="padding: 12px 16px; text-align: center;">${rankBadge}</td>
+      <td style="padding: 12px 16px; font-weight: 600; color: #0f172a;">${item.Asesor}</td>
+      <td style="padding: 12px 16px;"><div style="display: flex; gap: 6px; flex-wrap: wrap;">${marcasBadges}</div></td>
+      <td style="padding: 12px 16px; text-align: right; font-weight: 700; color: #2563eb;">${item.Registros}</td>
+      <td style="padding: 12px 16px; text-align: right; font-weight: 700; color: #059669;">${formatCurrency(item.Importe)}</td>
+      <td style="padding: 12px 16px; text-align: right; color: #475569;">${formatCurrency(ticketMedio)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderDashboard() {
+  const { data, metric } = getProcessedData();
+  updateKPIs(data);
+  renderPodium(data, metric);
+  renderChart(data, metric);
+  renderTable(data, metric);
+}
+
+// Inicializar al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  renderDashboard();
+});
 </script>
-</body>
-</html>
